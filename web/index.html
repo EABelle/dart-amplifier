@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dart Guitar Amplifier</title>
+    <meta name="scaffolded-by" content="https://github.com/dart-lang/sdk">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="main.dart.js"></script>
+    <meta property="og:title" content="JS Amplifier">
+    <meta property="og:image" content="img/sample.png">
+    <meta property="og:description" content="Amp simulator made with JavaScript">
+    <meta property="og:url" content="https://eabelle.github.io/js-amplifier/">
+    <link rel="amp icon" href="img/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+    <canvas id="visualizer"></canvas>
+    <div class="amp">
+        <div class="logo-container">
+            <div class="logo">
+                Marshmallow
+            </div>
+        </div>
+        <div class="plate">
+            <div class="controls">
+                <div class="input-container">
+                    <label for="volume">VOLUME</label>
+                    <div class="knob-container">
+                        <input orient="vertical" type="range" min="0" max="1" value="0.5" step=".01" id="volume">
+                        <img src="assets/img/knob.gif" class="control-volume" alt="" />    
+                    </div>
+                </div>
+                <div class="input-container">
+                    <label for="overdrive">GAIN</label>
+                    <div class="knob-container">
+                        <input orient="vertical" type="range" min=0 max=20 value="0" id="overdrive">
+                        <img src="assets/img/knob.gif" class="control-overdrive" alt="" />    
+                    </div>
+                </div>
+                
+                 <div class="input-container">
+                    <label for="bass">BASS</label>
+                    <div class="knob-container">
+                        <input orient="vertical" type="range" min="-10" max="10" value="0" id="bass">
+                        <img src="assets/img/knob.gif" class="control-bass" alt="" />    
+                    </div>
+                </div>
+                
+                 <div class="input-container">
+                    <label for="mid">MIDDLE</label>
+                    <div class="knob-container">
+                        <input orient="vertical" type="range" min="-10" max="10" value="0" id="mid">
+                        <img src="assets/img/knob.gif" class="control-mid" alt="" />    
+                    </div>
+                </div>
+                
+                <div class="input-container">
+                    <label for="treble">TREBLE</label>
+                    <div class="knob-container">
+                        <input orient="vertical" type="range" min="-10" max="10" value="0" id="treble">
+                        <img src="assets/img/knob.gif" class="control-treble" alt="" />    
+                    </div>
+                </div>
+
+                <div class="input-container">
+                    <label for="mute">MUTE</label>
+                        <button id="mute"></button>
+                        <div class="led"></button>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>
