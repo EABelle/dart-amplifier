@@ -35,10 +35,12 @@ void setRotation(String id, double multiplier, { int angleOffset = 0 }) {
 }
 
 class VolumeControl {
+
   Element? element;
   GainNode? node;
   AudioContext? context;
   String? id;
+
   VolumeControl(AudioContext context, String id, { defaultRotation: 300 }) {
     this.context = context;
     this.id = id;
@@ -50,13 +52,23 @@ class VolumeControl {
     });
     setRotation(id, defaultRotation);
   }
+
+  GainNode? get getNode {
+    return node;
+  }
+
+  Element? get getElement {
+    return element;
+  }
 }
 
 class OverdriveControl {
+
   Element? element;
   WaveShaperNode? node;
   AudioContext? context;
   String? id;
+
   OverdriveControl(AudioContext context, String id, { defaultRotation: 15 }) {
     this.context = context;
     this.id = id;
@@ -79,10 +91,12 @@ class OverdriveControl {
 }
 
 class EQControl {
+
   Element? element;
   BiquadFilterNode? node;
   AudioContext? context;
   String? id;
+
   EQControl(AudioContext context, String id, Map filterOptions, { angleOffset: 150, defaultRotation: 15 }) {
     this.context = context;
     this.id = id;
@@ -97,21 +111,39 @@ class EQControl {
   }
 }
 
+class MuteControl {
 
-/*
-Element getMuteButton(AudioContext context, GainNode gainNode, Element volumeControl) {
-  Element muteButton = querySelector('#mute')!;
+  AudioContext? context;
+  GainNode? gainNode;
+  Element? volumeElement;
+  Element? element;
+  String? id;
   bool muted = false;
-  muteButton.addEventListener('click', () {
-    muted = !muted;
-    if(muted) {
-        gainNode.gain.setTargetAtTime(.0, context.currentTime, 0.01);
-        muteButton.classList.add('muted');
-    } else {
-        gainNode.gain.setTargetAtTime(parseFloat(volume.value), context.currentTime, 0.01);
-        muteButton.classList.remove('muted');
-    }
-  });
-  return muteButton;
+
+  MuteControl(AudioContext context, String id, VolumeControl volumeControl) {
+    this.context = context;
+    this.gainNode = volumeControl.getNode;
+    this.volumeElement = volumeControl.getElement;
+    this.id = id;
+    this.element = querySelector('#$id');
+    this.element?.addEventListener('click', (e) {
+      this.muted = !muted;
+      if(this.muted) {
+          this.gainNode?.gain?.setTargetAtTime(.0, this.context!.currentTime!, 0.01);
+          this.element?.classes?.add('muted');
+      } else {
+          this.gainNode?.gain?.setTargetAtTime(double.parse(this.volumeElement!.nodeValue!), this.context!.currentTime!, 0.01);
+          this.element?.classes?.remove('muted');
+      }
+      print(this.muted);
+    });
+  }
+
+  bool get getMuted {
+    return muted;
+  }
+
+  void set setMuted(bool muted) {
+    this.muted = muted;
+  }
 }
-*/

@@ -18,7 +18,7 @@ void main() {
     'Q': sqrt1_2
   });
   EQControl treble = new EQControl(context, 'treble', {'type': 'highshelf', 'frequency': 4000});
-//  Element muteButton = getMuteButton(context);
+  MuteControl mute = new MuteControl(context, 'mute', volume);
 
   GainNode makeUpGain = new GainNode(context, {'gain': 50});
   ConvolverNode overdriveConvolver = new ConvolverNode(context);
