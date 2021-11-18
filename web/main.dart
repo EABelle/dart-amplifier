@@ -10,10 +10,14 @@ void main() {
   // Set up Web Audio API.
   AudioContext context = new AudioContext();
   VolumeControl volume = new VolumeControl(context, 'volume');
-  Element gain = getGainControl(context);
-  Element bass = getBassControl(context);
-  Element mid = getMidControl(context);
-  Element treble = getTrebleControl(context);
+  OverdriveControl gain = new OverdriveControl(context, 'overdrive');
+  EQControl bass = new EQControl(context, 'bass', {'type': 'lowshelf', 'frequency': 600});
+  EQControl mid = new EQControl(context, 'mid', {
+    'peaking': 'peaking',
+    'frequency': 2000,
+    'Q': sqrt1_2
+  });
+  EQControl treble = new EQControl(context, 'treble', {'type': 'highshelf', 'frequency': 4000});
 //  Element muteButton = getMuteButton(context);
 
   GainNode makeUpGain = new GainNode(context, {'gain': 50});
