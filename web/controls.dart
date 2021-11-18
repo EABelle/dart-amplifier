@@ -34,18 +34,6 @@ void setRotation(String id, double multiplier, { int angleOffset = 0 }) {
   });
 }
 
-/*
-Element getVolumeControl(AudioContext context) {
-  Element volume = querySelector('#volume')!;
-  GainNode gainNode = new GainNode(context, {'gain': volume.nodeValue});
-  volume.addEventListener('input', (e) {
-    InputElement input = e.target as InputElement;
-    gainNode.gain?.setTargetAtTime(double.parse(input.value!), context.currentTime!, 0.01);
-  });
-  setRotation('volume', 300);
-  return volume;
-}
-*/
 class VolumeControl {
   Element? element;
   GainNode? node;
@@ -63,26 +51,7 @@ class VolumeControl {
     setRotation(id, defaultRotation);
   }
 }
-/*
-Element getGainControl(AudioContext context) {
-  Element range = querySelector('#overdrive')!;
-  String overdriveValue = '0';
-  if (range.nodeValue != null) {
-    overdriveValue = range.nodeValue as String;
-  }
-  WaveShaperNode overdriveNode = new WaveShaperNode(context, {
-    'curve': makeOverdriveCurve(double.parse(overdriveValue) * 10),
-    'oversample': '4x'
-  });
-  range.addEventListener('input', (e) {
-    InputElement input = e.target as InputElement;
-    double value = double.parse(input.value!) * 5;
-    overdriveNode.curve = makeOverdriveCurve(value);
-  });
-  setRotation('overdrive', 15);
-  return range;
-}
-*/
+
 class OverdriveControl {
   Element? element;
   WaveShaperNode? node;
@@ -127,47 +96,9 @@ class EQControl {
     setRotation(id, defaultRotation, angleOffset: angleOffset);
   }
 }
+
+
 /*
-Element getBassControl(AudioContext context) {
-  Element bass = querySelector('#bass')!;
-  BiquadFilterNode bassEQ = new BiquadFilterNode(
-    context, {'type': 'lowshelf', 'frequency': 600, 'gain': bass.nodeValue});
-  bass.addEventListener('input', (e) {
-    InputElement input = e.target as InputElement;
-    bassEQ.gain?.setTargetAtTime(double.parse(input.value!), context.currentTime!, 0.01);
-  });
-  setRotation('bass', 15, angleOffset: 150);
-  return bass;
-}
-
-Element getMidControl(AudioContext context) {
-  Element mid = querySelector('#mid')!;
-  BiquadFilterNode middleEQ = new BiquadFilterNode(context, {
-    'peaking': 'peaking',
-    'frequency': 2000,
-    'gain': mid.nodeValue,
-    'Q': sqrt1_2
-  });
-  mid.addEventListener('input', (e) {
-    InputElement input = e.target as InputElement;
-    middleEQ.gain?.setTargetAtTime(double.parse(input.value!), context.currentTime!, 0.01);
-  });
-  setRotation('mid', 15, angleOffset: 150);
-  return mid;
-}
-
-Element getTrebleControl(AudioContext context) {
-  Element treble = querySelector('#treble')!;
-  BiquadFilterNode trebleEQ = new BiquadFilterNode(context,
-      {'type': 'highshelf', 'frequency': 4000, 'gain': treble.nodeValue});
-  treble.addEventListener('input', (e) {
-    InputElement input = e.target as InputElement;
-    trebleEQ.gain?.setTargetAtTime(double.parse(input.value!), context.currentTime!, 0.01);
-  });
-  setRotation('treble', 15, angleOffset: 150);
-  return treble;
-}
-
 Element getMuteButton(AudioContext context, GainNode gainNode, Element volumeControl) {
   Element muteButton = querySelector('#mute')!;
   bool muted = false;
