@@ -40,15 +40,22 @@ class VolumeControl {
   GainNode? node;
   AudioContext? context;
   String? id;
+  double? value;
 
   VolumeControl(AudioContext context, String id, { defaultRotation: 300 }) {
     this.context = context;
     this.id = id;
     this.element = querySelector('#$id');
-    this.node = new GainNode(context, {'gain': this.element?.nodeValue});
+    this.value = 0.5;
+    this.node = new GainNode(context, {'gain': this.value});
     this.element?.addEventListener('input', (e) {
       InputElement input = e.target as InputElement;
-      this.node?.gain?.setTargetAtTime(double.parse(input.value!), this.context!.currentTime!, 0.01);
+      this.value = double.parse(input.value!);
+      this.node?.gain?.setTargetAtTime(
+        this.value!,
+        this.context!.currentTime!,
+        0.01
+      );
     });
     setRotation(id, defaultRotation);
   }
@@ -59,6 +66,10 @@ class VolumeControl {
 
   Element? get getElement {
     return element;
+  }
+
+  double? get getValue {
+    return value;
   }
 }
 
@@ -115,15 +126,16 @@ class MuteControl {
 
   AudioContext? context;
   GainNode? gainNode;
-  Element? volumeElement;
   Element? element;
   String? id;
+  VolumeControl? volumeControl;
+
   bool muted = false;
 
   MuteControl(AudioContext context, String id, VolumeControl volumeControl) {
     this.context = context;
+    this.volumeControl = volumeControl;
     this.gainNode = volumeControl.getNode;
-    this.volumeElement = volumeControl.getElement;
     this.id = id;
     this.element = querySelector('#$id');
     this.element?.addEventListener('click', (e) {
@@ -132,7 +144,7 @@ class MuteControl {
           this.gainNode?.gain?.setTargetAtTime(.0, this.context!.currentTime!, 0.01);
           this.element?.classes?.add('muted');
       } else {
-          this.gainNode?.gain?.setTargetAtTime(double.parse(this.volumeElement!.nodeValue!), this.context!.currentTime!, 0.01);
+          this.gainNode?.gain?.setTargetAtTime(this.volumeControl!.getValue!, this.context!.currentTime!, 0.01);
           this.element?.classes?.remove('muted');
       }
       print(this.muted);
