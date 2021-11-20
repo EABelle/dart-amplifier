@@ -51,6 +51,7 @@ Future<MediaStreamAudioSourceNode> setupContext() async {
   MediaStream guitar = await getGuitar();
   ConvolverNode overdriveConvolver = new ConvolverNode(context);
   ConvolverNode reverb = new ConvolverNode(context);
+  AnalyserNode analyserNode = new AnalyserNode(context, { 'fftSize': 1024 });
   await decodeImpulse('./assets/impulses/overdrive.wav', context, overdriveConvolver);
   await decodeImpulse('./assets/impulses/reverb.wav', context, reverb);
   
@@ -63,6 +64,7 @@ Future<MediaStreamAudioSourceNode> setupContext() async {
     treble.node!,
     volume.node!,
     gain.node!,
+    analyserNode
   ]);
 }
 
