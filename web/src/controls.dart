@@ -34,19 +34,29 @@ void setRotation(String id, double multiplier, { int angleOffset = 0 }) {
   });
 }
 
-class VolumeControl {
+abstract class AmpControl {
 
   Element? element;
-  GainNode? node;
-  AudioContext? context;
   String? id;
+  AudioContext? context;
+  dynamic? node;
   double? value;
+
+  void set setElement(Element element) {
+    this.element = element;
+  }
+  void addEventListener(String event, dynamic Function(Event) callback) {
+    this.element?.addEventListener(event, callback);
+  }
+}
+
+class VolumeControl extends AmpControl {
 
   VolumeControl(AudioContext context, String id, { defaultRotation: 300 }) {
     this.context = context;
     this.id = id;
     this.element = querySelector('#$id');
-    this.value = 0.5;
+    this.value = 0;
     this.node = new GainNode(context, {'gain': this.value});
     this.element?.addEventListener('input', (e) {
       InputElement input = e.target as InputElement;
@@ -56,29 +66,15 @@ class VolumeControl {
         this.context!.currentTime!,
         0.01
       );
+      if (this.context!.state == 'suspended') {
+        context.resume();
+      }
     });
     setRotation(id, defaultRotation);
   }
-
-  GainNode? get getNode {
-    return node;
-  }
-
-  Element? get getElement {
-    return element;
-  }
-
-  double? get getValue {
-    return value;
-  }
 }
 
-class OverdriveControl {
-
-  Element? element;
-  WaveShaperNode? node;
-  AudioContext? context;
-  String? id;
+class OverdriveControl extends AmpControl {
 
   OverdriveControl(AudioContext context, String id, { defaultRotation: 15 }) {
     this.context = context;
@@ -101,12 +97,7 @@ class OverdriveControl {
   }
 }
 
-class EQControl {
-
-  Element? element;
-  BiquadFilterNode? node;
-  AudioContext? context;
-  String? id;
+class EQControl extends AmpControl {
 
   EQControl(AudioContext context, String id, Map filterOptions, { angleOffset: 150, defaultRotation: 15 }) {
     this.context = context;
@@ -122,20 +113,16 @@ class EQControl {
   }
 }
 
-class MuteControl {
+class MuteControl extends AmpControl {
 
-  AudioContext? context;
   GainNode? gainNode;
-  Element? element;
-  String? id;
   VolumeControl? volumeControl;
-
   bool muted = false;
 
   MuteControl(AudioContext context, String id, VolumeControl volumeControl) {
     this.context = context;
     this.volumeControl = volumeControl;
-    this.gainNode = volumeControl.getNode;
+    this.gainNode = volumeControl.node;
     this.id = id;
     this.element = querySelector('#$id');
     this.element?.addEventListener('click', (e) {
@@ -144,18 +131,9 @@ class MuteControl {
           this.gainNode?.gain?.setTargetAtTime(.0, this.context!.currentTime!, 0.01);
           this.element?.classes?.add('muted');
       } else {
-          this.gainNode?.gain?.setTargetAtTime(this.volumeControl!.getValue!, this.context!.currentTime!, 0.01);
+          this.gainNode?.gain?.setTargetAtTime(this.volumeControl!.value!, this.context!.currentTime!, 0.01);
           this.element?.classes?.remove('muted');
       }
-      print(this.muted);
     });
-  }
-
-  bool get getMuted {
-    return muted;
-  }
-
-  void set setMuted(bool muted) {
-    this.muted = muted;
   }
 }
